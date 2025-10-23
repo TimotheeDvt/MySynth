@@ -38,6 +38,9 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState::ParameterLayout createParams();
+	juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParams() };
+
 private:
     juce::Synthesiser synth;
 
