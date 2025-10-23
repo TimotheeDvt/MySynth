@@ -128,7 +128,7 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
 
     for (int i = 0; i < synth.getNumVoices(); ++i) {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
-            voice->updateADSR(
+            voice->update(
                 apvts.getRawParameterValue("ATTACK")->load(),
                 apvts.getRawParameterValue("DECAY")->load(),
                 apvts.getRawParameterValue("SUSTAIN")->load(),

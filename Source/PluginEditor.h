@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "./UI/AdsrComponent.h"
 
 class MySynthAudioProcessorEditor : public juce::AudioProcessorEditor
 {
@@ -14,22 +15,10 @@ public:
 
 private:
     juce::ComboBox ocsSelector;
-	juce::Slider attackSlidder;
-	juce::Slider decaySlidder;
-	juce::Slider sustainSlidder;
-	juce::Slider releaseSlidder;
-
-	using ComboAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
-	using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
-
-	std::unique_ptr<ComboAttachment> ocsSelectorAttachment;
-    std::unique_ptr<SliderAttachment> attackSliderAttachment;
-	std::unique_ptr<SliderAttachment> decaySliderAttachment;
-	std::unique_ptr<SliderAttachment> sustainSliderAttachment;
-	std::unique_ptr<SliderAttachment> releaseSliderAttachment;
+	std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> ocsSelectorAttachment;
 
 	MySynthAudioProcessor& audioProcessor;
-	void setSliderParams(juce::Slider& slider);
+    AdsrComponent adsr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessorEditor)
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "SynthSound.h"
+#include "./Data/AdsrData.h"
 
 class SynthVoice : public juce::SynthesiserVoice {
 public:
@@ -17,10 +18,9 @@ public:
 		int startSample,
 		int numSamples) override;
 
-	void updateADSR(const float attack, const float decay, const float sustain, const float release);
+	void update(const float attack, const float decay, const float sustain, const float release);
 private:
-	juce::ADSR adsr;
-	juce::ADSR::Parameters adsrParams;
+	AdsrData adsr;
 	juce::AudioBuffer<float> synthBuffer;
 
 	juce::dsp::Oscillator<float> osc{ [](float x) { return x / juce::MathConstants<float>::pi; } };
