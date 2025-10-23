@@ -3,18 +3,18 @@
 
 MySynthAudioProcessor::MySynthAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+    : AudioProcessor(BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+        .withInput("Input", juce::AudioChannelSet::stereo(), true)
+#endif
+        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+#endif
+    )
 #endif
 {
-	synth.addSound(new SynthSound());
-	synth.addVoice(new SynthVoice());
+    synth.addSound(new SynthSound());
+    synth.addVoice(new SynthVoice());
 }
 
 MySynthAudioProcessor::~MySynthAudioProcessor()
@@ -28,29 +28,29 @@ const juce::String MySynthAudioProcessor::getName() const
 
 bool MySynthAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool MySynthAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool MySynthAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double MySynthAudioProcessor::getTailLengthSeconds() const
@@ -68,22 +68,27 @@ int MySynthAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void MySynthAudioProcessor::setCurrentProgram (int index)
+void MySynthAudioProcessor::setCurrentProgram(int index)
 {
 }
 
-const juce::String MySynthAudioProcessor::getProgramName (int index)
+const juce::String MySynthAudioProcessor::getProgramName(int index)
 {
     return {};
 }
 
-void MySynthAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void MySynthAudioProcessor::changeProgramName(int index, const juce::String& newName)
 {
 }
 
-void MySynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void MySynthAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-	synth.setCurrentPlaybackSampleRate(sampleRate);
+    synth.setCurrentPlaybackSampleRate(sampleRate);
+    for (int i = 0; i < synth.getNumVoices(); ++i) {
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+	}
 }
 
 void MySynthAudioProcessor::releaseResources()
@@ -92,42 +97,42 @@ void MySynthAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool MySynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool MySynthAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused (layouts);
+#if JucePlugin_IsMidiEffect
+    juce::ignoreUnused(layouts);
     return true;
-  #else
+#else
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
-   #if ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
+#endif
 
     return true;
-  #endif
+#endif
 }
 #endif
 
-void MySynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+        buffer.clear(i, 0, buffer.getNumSamples());
 
     for (int i = 0; i < synth.getNumVoices(); ++i) {
-        if (auto voice = dynamic_cast<juce::SynthesiserVoice* > (synth.getVoice(i))) {
-            
-		}
+        if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i))) {
+
+        }
     }
 
-	synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 
@@ -138,16 +143,16 @@ bool MySynthAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* MySynthAudioProcessor::createEditor()
 {
-    return new MySynthAudioProcessorEditor (*this);
+    return new MySynthAudioProcessorEditor(*this);
 }
 
 //==============================================================================
-void MySynthAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void MySynthAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
 
 }
 
-void MySynthAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void MySynthAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
 
 }
