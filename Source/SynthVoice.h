@@ -2,6 +2,7 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "./Data/AdsrData.h"
+#include "./Data/OscData.h"
 
 class SynthVoice : public juce::SynthesiserVoice {
 public:
@@ -19,15 +20,12 @@ public:
 		int numSamples) override;
 
 	void update(const float attack, const float decay, const float sustain, const float release);
+	OscData& getOscillator() { return osc; };
 private:
 	AdsrData adsr;
 	juce::AudioBuffer<float> synthBuffer;
 
-	juce::dsp::Oscillator<float> osc{ [](float x) { return x / juce::MathConstants<float>::pi; } };
-
-	// Sine : juce::dsp::Oscillator<float> osc{ [](float x) { return std::sin(x); } };
-	// Saw : juce::dsp::Oscillator<float> osc{ [](float x) { return x / juce::MathConstants<float>::pi; } };
-	// Square : juce::dsp::Oscillator<float> osc{ [](float x) { return x < 0.0f ? -1.0f : 1.0f; } };
+	OscData osc;
 
 	juce::dsp::Gain<float> gain;
 

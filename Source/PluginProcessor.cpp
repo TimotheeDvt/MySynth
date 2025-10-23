@@ -128,12 +128,15 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
 
     for (int i = 0; i < synth.getNumVoices(); ++i) {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
-            voice->update(
-                apvts.getRawParameterValue("ATTACK")->load(),
-                apvts.getRawParameterValue("DECAY")->load(),
-                apvts.getRawParameterValue("SUSTAIN")->load(),
-                apvts.getRawParameterValue("RELEASE")->load()
-			);
+			auto& attack = *apvts.getRawParameterValue("ATTACK");
+			auto& decay = *apvts.getRawParameterValue("DECAY");
+			auto& sustain = *apvts.getRawParameterValue("SUSTAIN");
+			auto& release = *apvts.getRawParameterValue("RELEASE");
+
+			auto& oscWave = *apvts.getRawParameterValue("OSC");
+
+			voice->update(attack.load(), decay.load(), sustain.load(), release.load());
+			voice->getOscillator().setWaveType(oscWave.load());
         }
     }
 
@@ -169,11 +172,11 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::createParams() {
 	std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-	// Combo box switch oscillator type
+    // Combo box switch oscillator type
     params.push_back(std::make_unique<juce::AudioParameterChoice>(
         "OSC",
         "Oscillator",
-        juce::StringArray{"Sine", "Saw", "Square"},
+        juce::StringArray{ "Sine", "Saw", "Square" },
         0
     ));
 

@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "./UI/AdsrComponent.h"
+#include "./UI/OscComponent.h"
 
 class MySynthAudioProcessorEditor : public juce::AudioProcessorEditor
 {
@@ -14,10 +15,8 @@ public:
     void resized() override;
 
 private:
-    juce::ComboBox ocsSelector;
-	std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> ocsSelectorAttachment;
-
 	MySynthAudioProcessor& audioProcessor;
+    OscComponent oscComponent;
     AdsrComponent adsr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessorEditor)
