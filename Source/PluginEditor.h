@@ -29,6 +29,7 @@ private:
 	std::unique_ptr<SliderAttachment> releaseSliderAttachment;
 
 	MySynthAudioProcessor& audioProcessor;
+	void setSliderParams(juce::Slider& slider);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessorEditor)
 };

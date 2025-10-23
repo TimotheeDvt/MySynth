@@ -127,8 +127,13 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         buffer.clear(i, 0, buffer.getNumSamples());
 
     for (int i = 0; i < synth.getNumVoices(); ++i) {
-        if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i))) {
-
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
+            voice->updateADSR(
+                apvts.getRawParameterValue("ATTACK")->load(),
+                apvts.getRawParameterValue("DECAY")->load(),
+                apvts.getRawParameterValue("SUSTAIN")->load(),
+                apvts.getRawParameterValue("RELEASE")->load()
+			);
         }
     }
 
@@ -171,7 +176,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         juce::StringArray{"Sine", "Saw", "Square"},
         0
     ));
-    // Attack
+
+    // ADSR
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "ATTACK",
         "Attack",
@@ -179,7 +185,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         0.1f
 	));
 
-	// Decay
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "DECAY",
         "Decay",
@@ -187,7 +192,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         0.1f
     ));
 
-	// Sustain
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "SUSTAIN",
         "Sustain",
@@ -195,7 +199,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         0.1f
     ));
 
-	// Release
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "RELEASE",
         "Release",

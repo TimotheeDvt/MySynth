@@ -14,6 +14,11 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor(MySynthAudioProcessor& 
     decaySliderAttachment   = std::make_unique<SliderAttachment>(audioProcessor.apvts, "DECAY",     decaySlidder);
     sustainSliderAttachment = std::make_unique<SliderAttachment>(audioProcessor.apvts, "SUSTAIN",   sustainSlidder);
     releaseSliderAttachment = std::make_unique<SliderAttachment>(audioProcessor.apvts, "RELEASE",   releaseSlidder);
+
+	setSliderParams(attackSlidder);
+	setSliderParams(decaySlidder);
+	setSliderParams(sustainSlidder);
+	setSliderParams(releaseSlidder);
 }
 
 MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
@@ -22,14 +27,27 @@ MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
 
 void MySynthAudioProcessorEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+    g.fillAll(juce::Colours::black);
+    
 
-    g.setColour(juce::Colours::white);
-    g.setFont(juce::FontOptions(15.0f));
-    g.drawFittedText("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void MySynthAudioProcessorEditor::resized()
 {
+	const auto bounds = getLocalBounds().reduced(10);
+	const auto padding = 10;
+	const auto sliderWidth = bounds.getWidth() / 4 - padding;
+	const auto sliderHeight = bounds.getHeight() / 2 - padding;
+    const auto sliderStartX = 0;
+    const auto sliderStartY = bounds.getHeight() / 2 - (sliderHeight / 2);
+	attackSlidder.setBounds(sliderStartX, sliderStartY, sliderWidth, sliderHeight);
+    decaySlidder.setBounds(attackSlidder.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+    sustainSlidder.setBounds(decaySlidder.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+    releaseSlidder.setBounds(sustainSlidder.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+}
 
+void MySynthAudioProcessorEditor::setSliderParams(juce::Slider& slider) {
+    slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 25);
+    addAndMakeVisible(slider);
 }
