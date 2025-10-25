@@ -28,6 +28,8 @@
         <FILE id="aKigjE" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="qTog1E" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
+        <FILE id="I8ymyS" name="FmComponent.cpp" compile="1" resource="0" file="Source/UI/FmComponent.cpp"/>
+        <FILE id="HoUmU8" name="FmComponent.h" compile="0" resource="0" file="Source/UI/FmComponent.h"/>
       </GROUP>
     </GROUP>
   </MAINGROUP>

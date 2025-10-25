@@ -8,9 +8,9 @@ MySynth is a small synth application built with the JUCE framework. Intended as 
 ## Building
 #### build :
     >> cmake -B build -G "Visual Studio 16 2019" -A x64
-    >> cmake --build build
+    >> cmake --build build --config Release
 #### run (standalone) :
-    >> \build\MySynth_artefacts\Release\Standalone\MySynth.exe
+    >> ./build/MySynth_artefacts/Release/Standalone/MySynth.exe
 
 
 #### Built following these incredible tutorials :

@@ -4,6 +4,7 @@
 #include "PluginProcessor.h"
 #include "./UI/AdsrComponent.h"
 #include "./UI/OscComponent.h"
+#include "./UI/FmComponent.h"
 
 class MySynthAudioProcessorEditor : public juce::AudioProcessorEditor
 {
@@ -18,6 +19,7 @@ private:
 	MySynthAudioProcessor& audioProcessor;
     OscComponent oscComponent;
     AdsrComponent adsr;
+    FmComponent fm;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessorEditor)
 };

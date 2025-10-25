@@ -23,26 +23,55 @@ AdsrComponent::~AdsrComponent()
 void AdsrComponent::paint (juce::Graphics& g)
 {
     g.fillAll(juce::Colours::black);
+    g.setColour(juce::Colours::darkblue);
+    g.drawRoundedRectangle(getLocalBounds().toFloat().reduced(1.0f), 5.0f, 1.0f);
 }
 
 void AdsrComponent::resized()
 {
     const auto bounds = getLocalBounds().reduced(10);
-    const auto padding = 10;
-    const auto sliderWidth = bounds.getWidth() / 4 - padding;
-    const auto sliderHeight = bounds.getHeight();
-    const auto sliderStartX = 0;
-    const auto sliderStartY = 0;
+    const auto sliderWidth = (float)bounds.getWidth() / 4;
+    const auto sliderHeight = (float)bounds.getHeight();
 
-    attackSlidder.setBounds(sliderStartX, sliderStartY, sliderWidth, sliderHeight);
-    decaySlidder.setBounds(attackSlidder.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
-    sustainSlidder.setBounds(decaySlidder.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
-    releaseSlidder.setBounds(sustainSlidder.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+    juce::FlexBox fb;
+    fb.flexDirection = juce::FlexBox::Direction::row;
+    fb.justifyContent = juce::FlexBox::JustifyContent::spaceAround;
+    fb.alignItems = juce::FlexBox::AlignItems::center;
+
+    fb.items.add(
+        juce::FlexItem(attackSlidder)
+            .withWidth(sliderWidth)
+            .withHeight(sliderHeight)
+    );
+    fb.items.add(
+        juce::FlexItem(decaySlidder)
+            .withWidth(sliderWidth)
+            .withHeight(sliderHeight)
+    );
+    fb.items.add(
+        juce::FlexItem(sustainSlidder)
+            .withWidth(sliderWidth)
+            .withHeight(sliderHeight)
+    );
+    fb.items.add(
+        juce::FlexItem(releaseSlidder)
+            .withWidth(sliderWidth)
+            .withHeight(sliderHeight)
+    );
+
+    fb.performLayout(bounds);
 }
 
 
 void AdsrComponent::setSliderParams(juce::Slider& slider) {
     slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 25);
+    slider.setNumDecimalPlacesToDisplay(1);
+    slider.textFromValueFunction= [](double value) {
+        if (value >= 10.0)
+            return juce::String((int)value);
+        else
+            return juce::String(value, 1);
+    };
     addAndMakeVisible(slider);
 }

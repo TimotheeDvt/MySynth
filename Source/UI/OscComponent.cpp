@@ -21,6 +21,8 @@ OscComponent::~OscComponent()
 void OscComponent::paint (juce::Graphics& g)
 {
 	g.fillAll(juce::Colours::black);
+    g.setColour(juce::Colours::darkblue);
+    g.drawRoundedRectangle(getLocalBounds().toFloat().reduced(1.0f), 5.0f, 1.0f);
 }
 
 void OscComponent::resized()
