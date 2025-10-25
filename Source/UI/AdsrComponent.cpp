@@ -66,12 +66,5 @@ void AdsrComponent::resized()
 void AdsrComponent::setSliderParams(juce::Slider& slider) {
     slider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 25);
-    slider.setNumDecimalPlacesToDisplay(1);
-    slider.textFromValueFunction= [](double value) {
-        if (value >= 10.0)
-            return juce::String((int)value);
-        else
-            return juce::String(value, 1);
-    };
     addAndMakeVisible(slider);
 }
