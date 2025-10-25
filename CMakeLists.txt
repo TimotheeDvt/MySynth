@@ -37,8 +37,6 @@ target_sources(MySynth
         Source/UI/AdsrComponent.h
         Source/UI/OscComponent.cpp
         Source/UI/OscComponent.h
-        Source/UI/FmComponent.cpp
-        Source/UI/FmComponent.h
         Source/Data/AdsrData.cpp
         Source/Data/AdsrData.h
         Source/Data/OscData.cpp
