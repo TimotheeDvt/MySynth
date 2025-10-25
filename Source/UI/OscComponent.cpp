@@ -1,4 +1,4 @@
-#include <JuceHeader.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 #include "OscComponent.h"
 
 OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, juce::String waveSelectorId)

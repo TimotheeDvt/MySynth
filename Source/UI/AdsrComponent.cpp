@@ -1,4 +1,4 @@
-#include <JuceHeader.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 #include "AdsrComponent.h"
 
 AdsrComponent::AdsrComponent(juce::AudioProcessorValueTreeState& apvts)

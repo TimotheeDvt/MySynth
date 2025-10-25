@@ -2,6 +2,7 @@
 
 void OscData::prepareToPlay(juce::dsp::ProcessSpec spec) {
 	prepare(spec);
+	initialise([](float x) { return std::sin(x); });
 };
 
 void OscData::getNextAudioBlock(juce::dsp::ProcessContextReplacing<float> context) {
