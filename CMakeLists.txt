@@ -14,7 +14,7 @@ juce_add_plugin(MySynth
     COMPANY_NAME "VotreSociete"
     PLUGIN_MANUFACTURER_CODE Manu
     PLUGIN_CODE Syn1
-    FORMATS Standalone
+    FORMATS Standalone VST3
     PRODUCT_NAME "MySynth"
     IS_SYNTH TRUE
     NEEDS_MIDI_INPUT TRUE
