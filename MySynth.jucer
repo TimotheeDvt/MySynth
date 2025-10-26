@@ -18,6 +18,8 @@
         <FILE id="eoM34F" name="AdsrData.cpp" compile="1" resource="0" file="Source/Data/AdsrData.cpp"
               xcodeResource="0" skipPCH="0"/>
         <FILE id="MrUT3F" name="AdsrData.h" compile="0" resource="0" file="Source/Data/AdsrData.h"/>
+        <FILE id="V5lNiU" name="FilterData.cpp" compile="1" resource="0" file="Source/Data/FilterData.cpp"/>
+        <FILE id="DQXZcr" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
         <FILE id="ynB11W" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
         <FILE id="KGE3GX" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
       </GROUP>
@@ -25,6 +27,13 @@
         <FILE id="euC0bg" name="AdsrComponent.cpp" compile="1" resource="0"
               file="Source/UI/AdsrComponent.cpp"/>
         <FILE id="K45S1x" name="AdsrComponent.h" compile="0" resource="0" file="Source/UI/AdsrComponent.h"/>
+        <FILE id="qBRsRd" name="FFTComponent.cpp" compile="1" resource="0"
+              file="Source/UI/FFTComponent.cpp"/>
+        <FILE id="HbGUg2" name="FFTComponent.h" compile="0" resource="0" file="Source/UI/FFTComponent.h"/>
+        <FILE id="qFIbkA" name="FilterComponent.cpp" compile="1" resource="0"
+              file="Source/UI/FilterComponent.cpp"/>
+        <FILE id="O08eR8" name="FilterComponent.h" compile="0" resource="0"
+              file="Source/UI/FilterComponent.h"/>
         <FILE id="aKigjE" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="qTog1E" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
