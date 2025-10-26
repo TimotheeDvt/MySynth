@@ -11,21 +11,21 @@ add_subdirectory(${JUCE_DIR} JUCE)
 
 # Créer le plugin
 juce_add_plugin(MySynth
-    COMPANY_NAME "VotreSociete"
-    PLUGIN_MANUFACTURER_CODE Manu
-    PLUGIN_CODE Syn1
-    FORMATS Standalone
-    PRODUCT_NAME "MySynth"
-    IS_SYNTH TRUE
-    NEEDS_MIDI_INPUT TRUE
-    NEEDS_MIDI_OUTPUT FALSE
-    COPY_PLUGIN_AFTER_BUILD FALSE
-    PLUGIN_NAME "MySynth"
+        COMPANY_NAME "VotreSociete"
+        PLUGIN_MANUFACTURER_CODE Manu
+        PLUGIN_CODE Syn1
+        FORMATS Standalone
+        PRODUCT_NAME "MySynth"
+        IS_SYNTH TRUE
+        NEEDS_MIDI_INPUT TRUE
+        NEEDS_MIDI_OUTPUT FALSE
+        COPY_PLUGIN_AFTER_BUILD FALSE
+        PLUGIN_NAME "MySynth"
 )
 
 # Sources du projet
 target_sources(MySynth
-    PRIVATE
+PRIVATE
         Source/PluginProcessor.cpp
         Source/PluginProcessor.h
         Source/PluginEditor.cpp
@@ -54,7 +54,7 @@ target_sources(MySynth
 
 # Modules JUCE nécessaires
 target_compile_definitions(MySynth
-    PUBLIC
+PUBLIC
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
         JUCE_VST3_CAN_REPLACE_VST2=0
@@ -64,11 +64,11 @@ target_compile_definitions(MySynth
 )
 
 target_link_libraries(MySynth
-    PRIVATE
+PRIVATE
         juce::juce_audio_utils
         juce::juce_audio_processors
         juce::juce_dsp
-    PUBLIC
+PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags

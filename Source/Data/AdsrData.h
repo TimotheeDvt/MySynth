@@ -3,10 +3,9 @@
 
 class AdsrData : public juce::ADSR {
 public:
-	void update(const float attack, const float decay, const float sustain, const float release);
+        void update(const float attack, const float decay, const float sustain, const float release);
 
 private:
-
-	juce::ADSR::Parameters adsrParams;
+        juce::ADSR::Parameters adsrParams;
 
 };

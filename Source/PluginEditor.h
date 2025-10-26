@@ -8,22 +8,21 @@
 #include "./UI/FilterComponent.h"
 #include "./UI/FFTComponent.h"
 
-class MySynthAudioProcessorEditor : public juce::AudioProcessorEditor
-{
+class MySynthAudioProcessorEditor : public juce::AudioProcessorEditor {
 public:
-    MySynthAudioProcessorEditor(MySynthAudioProcessor&);
-    ~MySynthAudioProcessorEditor() override;
+        MySynthAudioProcessorEditor(MySynthAudioProcessor&);
+        ~MySynthAudioProcessorEditor() override;
 
-    void paint(juce::Graphics&) override;
-    void resized() override;
+        void paint(juce::Graphics&) override;
+        void resized() override;
 
 private:
-	MySynthAudioProcessor& audioProcessor;
-    OscComponent oscComponent;
-    AdsrComponent adsr;
-    FilterComponent filter;
-    FFTComponent fft;
-    juce::MidiKeyboardComponent keyboard;
+        MySynthAudioProcessor& audioProcessor;
+        OscComponent oscComponent;
+        AdsrComponent adsr;
+        FilterComponent filter;
+        FFTComponent fft;
+        juce::MidiKeyboardComponent keyboard;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessorEditor)
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessorEditor)
 };
