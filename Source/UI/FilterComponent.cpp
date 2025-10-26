@@ -74,13 +74,6 @@ void FilterComponent::resized() {
         );
 
         fb.performLayout(bounds);
-
-        // const auto bounds = getLocalBounds();
-        // filterTypeSelector.setBounds(0, 0, 90, 20);
-        // filterFreqSlider.setBounds(0, 80, bounds.getWidth() / 2 - 10, 90);
-        // filterFreqLabel.setBounds(filterFreqSlider.getX(), filterFreqSlider.getY() - 20, filterFreqSlider.getWidth(), 20);
-        // filterResSlider.setBounds(filterFreqSlider.getRight(), 80, bounds.getWidth() / 2 - 10, 90);
-        // filterResLabel.setBounds(filterResSlider.getX(), filterFreqSlider.getY() - 20, filterFreqSlider.getWidth(), 20);
 }
 
 using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
