@@ -1,17 +1,18 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "./UI/FFTComponent.h"
 
 MySynthAudioProcessor::MySynthAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor(BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
-        .withInput("Input", juce::AudioChannelSet::stereo(), true)
-#endif
-        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-#endif
-    )
-#endif
+    #ifndef JucePlugin_PreferredChannelConfigurations
+        : AudioProcessor(BusesProperties()
+        #if ! JucePlugin_IsMidiEffect
+            #if ! JucePlugin_IsSynth
+                    .withInput("Input", juce::AudioChannelSet::stereo(), true)
+            #endif
+                .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+        #endif
+            )
+    #endif
 {
     synth.addSound(new SynthSound());
     for (int i = 0; i < 8; ++i)
@@ -128,6 +129,8 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
+    keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
+
     for (int i = 0; i < synth.getNumVoices(); ++i) {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
 			auto& oscWave = *apvts.getRawParameterValue("OSC1");
@@ -154,6 +157,19 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     filter.updateParams(filterType.load(), filterFreq.load(), filterRes.load());
 
     filter.process(buffer);
+
+    if (fftComponent != nullptr) {
+        fftComponent->updateFilterParams(
+            (int)filterType.load(),
+            filterFreq.load(),
+            filterRes.load(),
+            getSampleRate()
+        );
+
+        for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
+            fftComponent->pushNextSampleIntoFifo(buffer.getSample(0, sample));
+        }
+    }
 }
 
 
@@ -248,7 +264,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         "FILTERFREQ",
         "Filter Frequency",
         juce::NormalisableRange<float>{20.0f, 20000.0f, 0.1f, 0.3f},
-        200.0f
+        20000.0f
     ));
     // Filter Resonance
     params.push_back(std::make_unique<juce::AudioParameterFloat>(

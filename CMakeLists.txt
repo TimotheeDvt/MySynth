@@ -41,6 +41,8 @@ target_sources(MySynth
         Source/UI/OscComponent.h
         Source/UI/FilterComponent.cpp
         Source/UI/FilterComponent.h
+        Source/UI/FFTComponent.cpp
+        Source/UI/FFTComponent.h
 
         Source/Data/AdsrData.cpp
         Source/Data/AdsrData.h

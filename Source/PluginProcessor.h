@@ -1,12 +1,14 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_audio_utils/juce_audio_utils.h>
 #include "SynthVoice.h"
 #include "SynthSound.h"
 #include "Data/FilterData.h"
 
-class MySynthAudioProcessor : public juce::AudioProcessor
-{
+class FFTComponent;
+
+class MySynthAudioProcessor : public juce::AudioProcessor {
 public:
     MySynthAudioProcessor();
     ~MySynthAudioProcessor() override;
@@ -14,9 +16,9 @@ public:
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-#ifndef JucePlugin_PreferredChannelConfigurations
+    #ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
-#endif
+    #endif
 
     void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
@@ -42,9 +44,14 @@ public:
     juce::AudioProcessorValueTreeState::ParameterLayout createParams();
 	juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParams() };
 
+    juce::MidiKeyboardState keyboardState;
+
+    void setFFTComponent(FFTComponent* fftComp) { fftComponent = fftComp; }
+
 private:
     juce::Synthesiser synth;
     FilterData filter;
+    FFTComponent* fftComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessor)
 };
