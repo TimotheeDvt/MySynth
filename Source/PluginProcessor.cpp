@@ -90,6 +90,7 @@ void MySynthAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
             voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
         }
 	}
+    filter.prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
 }
 
 void MySynthAudioProcessor::releaseResources()
@@ -146,6 +147,13 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     }
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    auto& filterType = *apvts.getRawParameterValue("FILTERTYPE");
+    auto& filterFreq = *apvts.getRawParameterValue("FILTERFREQ");
+    auto& filterRes = *apvts.getRawParameterValue("FILTERRES");
+    filter.updateParams(filterType.load(), filterFreq.load(), filterRes.load());
+
+    filter.process(buffer);
 }
 
 
@@ -185,6 +193,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         0
     ));
 
+    // FREQUENCY MODULATOR
     // fm Frequ
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "FMFREQOSC1",
@@ -192,7 +201,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         juce::NormalisableRange<float>{0.0f, 1000.0f, 0.01f, 0.3f},
         0.0f
 	));
-
     // fm Depth
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "FMDEPTHOSC1",
@@ -208,26 +216,46 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
         juce::NormalisableRange<float>{0.1f, 1.0f, 0.01f},
         0.1f
 	));
-
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "DECAY",
         "Decay",
         juce::NormalisableRange<float>{0.1f, 1.0f, 0.01f},
         0.1f
     ));
-
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "SUSTAIN",
         "Sustain",
         juce::NormalisableRange<float>{0.1f, 1.0f, 0.01f},
         1.0f
     ));
-
     params.push_back(std::make_unique<juce::AudioParameterFloat>(
         "RELEASE",
         "Release",
         juce::NormalisableRange<float>{0.1f, 3.0f, 0.01f},
         0.4f
+    ));
+
+    // FILTER
+    // Filter Type
+    params.push_back(std::make_unique<juce::AudioParameterChoice>(
+        "FILTERTYPE",
+        "Filter Type",
+        juce::StringArray{ "LowPass", "BandPass", "HighPass" },
+        0
+    ));
+    // Filter Frequency
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(
+        "FILTERFREQ",
+        "Filter Frequency",
+        juce::NormalisableRange<float>{20.0f, 20000.0f, 0.1f, 0.3f},
+        200.0f
+    ));
+    // Filter Resonance
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(
+        "FILTERRES",
+        "Filter Resonance",
+        juce::NormalisableRange<float>{1.0f, 10.0f, 0.1f},
+        1.0f
     ));
 
 	return { params.begin(), params.end() };

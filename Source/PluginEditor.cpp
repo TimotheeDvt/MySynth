@@ -2,12 +2,17 @@
 #include "PluginEditor.h"
 
 MySynthAudioProcessorEditor::MySynthAudioProcessorEditor(MySynthAudioProcessor& p)
-: AudioProcessorEditor(&p), audioProcessor(p), oscComponent(audioProcessor.apvts, "OSC1", "FMFREQOSC1", "FMDEPTHOSC1"), adsr(audioProcessor.apvts)
+: AudioProcessorEditor(&p),
+  audioProcessor(p),
+  oscComponent(audioProcessor.apvts, "OSC1", "FMFREQOSC1", "FMDEPTHOSC1"),
+  filter(audioProcessor.apvts, "FILTERTYPE", "FILTERFREQ", "FILTERRES"),
+  adsr(audioProcessor.apvts)
 {
-  setSize(400, 300);
+  setSize(600, 500);
 
   addAndMakeVisible(oscComponent);
   addAndMakeVisible(adsr);
+  addAndMakeVisible(filter);
 }
 
 MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor()
@@ -21,6 +26,10 @@ void MySynthAudioProcessorEditor::paint(juce::Graphics& g)
 
 void MySynthAudioProcessorEditor::resized()
 {
-  oscComponent.setBounds(10, 10, getWidth() / 2 - 10, 200);
-  adsr.setBounds(getWidth() / 2, 0, getWidth() / 2, getHeight());
+  const auto paddingX = 5;
+  const auto paddingY = 35;
+
+  oscComponent.setBounds(paddingX, paddingY, 300, 200);
+  adsr.setBounds(oscComponent.getRight(), paddingY, 280, 400);
+  filter.setBounds(paddingX, oscComponent.getBottom(), 300, 200);
 }

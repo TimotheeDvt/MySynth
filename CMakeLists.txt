@@ -14,7 +14,7 @@ juce_add_plugin(MySynth
     COMPANY_NAME "VotreSociete"
     PLUGIN_MANUFACTURER_CODE Manu
     PLUGIN_CODE Syn1
-    FORMATS Standalone VST3
+    FORMATS Standalone
     PRODUCT_NAME "MySynth"
     IS_SYNTH TRUE
     NEEDS_MIDI_INPUT TRUE
@@ -30,17 +30,24 @@ target_sources(MySynth
         Source/PluginProcessor.h
         Source/PluginEditor.cpp
         Source/PluginEditor.h
+
         Source/SynthVoice.cpp
         Source/SynthVoice.h
         Source/SynthSound.h
+
         Source/UI/AdsrComponent.cpp
         Source/UI/AdsrComponent.h
         Source/UI/OscComponent.cpp
         Source/UI/OscComponent.h
+        Source/UI/FilterComponent.cpp
+        Source/UI/FilterComponent.h
+
         Source/Data/AdsrData.cpp
         Source/Data/AdsrData.h
         Source/Data/OscData.cpp
         Source/Data/OscData.h
+        Source/Data/FilterData.cpp
+        Source/Data/FilterData.h
 )
 
 # Modules JUCE nécessaires
