@@ -38,7 +38,7 @@ private:
         int currentFilterType = 0;  // 0: LowPass, 1: BandPass, 2: HighPass
         float currentFilterFreq = 2000.0f;
         float currentFilterRes = 1.0f;
-        double currentSampleRate = 44100.0;
+        double currentSampleRate = 48000.0;
 
         static constexpr int smoothingFactor = 3;
         float smoothedScopeData[fftSize / 2];

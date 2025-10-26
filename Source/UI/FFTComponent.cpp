@@ -1,4 +1,8 @@
 #include "FFTComponent.h"
+#define _USE_MATH_DEFINES
+#include <complex>
+#include <cmath>
+#include <math.h>
 
 FFTComponent::FFTComponent()
         : forwardFFT(fftOrder),
@@ -26,7 +30,7 @@ void FFTComponent::paint(juce::Graphics& g) {
         auto height = (float) getLocalBounds().getHeight();
 
         const float fMin = 20.0f;
-        const float sampleRateLocal = (currentSampleRate > 0.0) ? (float) currentSampleRate : 44100.0f;
+        const float sampleRateLocal = (currentSampleRate > 0.0) ? (float) currentSampleRate : 48000.0f;
         const float fMax = sampleRateLocal * 0.5f;
         const int numBins = fftSize / 2;
 
@@ -43,15 +47,15 @@ void FFTComponent::paint(juce::Graphics& g) {
         const float logMax = std::log10(std::max(fMax, fMin + 1.0f));
         for (auto f : gridFreqs) {
                 if (f > fMax)
-                break;
+                        break;
                 float pos = (std::log10(std::max(f, fMin)) - logMin) / (logMax - logMin);
                 float x = juce::jlimit(0.0f, 1.0f, pos) * width;
                 g.drawVerticalLine((int)x, 0.0f, height);
                 juce::String label;
                 if (f >= 1000.0f)
-                label = juce::String((int)(f / 1000.0f)) + "k";
+                        label = juce::String((int)(f / 1000.0f)) + "k";
                 else
-                label = juce::String((int)f);
+                        label = juce::String((int)f);
                 g.drawText(label, (int)x - 18, (int)height - 18, 36, 15, juce::Justification::centred);
         }
 
@@ -159,43 +163,69 @@ void FFTComponent::drawFilterCurve(juce::Graphics& g) {
         g.drawText(filterNames[currentFilterType], (int)width - 80, 5, 75, 20, juce::Justification::right);
 }
 
-
 float FFTComponent::getFilterMagnitudeForFrequency(float frequency) {
-        if (frequency <= 0.0f || currentFilterFreq <= 0.0f)
+        if (frequency <= 0.0f || currentFilterFreq <= 0.0f || currentSampleRate <= 0.0)
                 return 1.0f;
 
-        // Normalise...
-        float normalizedFreq = frequency / (float)currentSampleRate;
-        float normalizedCutoff = currentFilterFreq / (float)currentSampleRate;
-        float ratio = normalizedFreq / normalizedCutoff;
-        float magnitude = 1.0f;
+        const float Q = std::max(0.0001f, currentFilterRes);
+        const float fc = currentFilterFreq;
+        const float fs = (float) currentSampleRate;
+
+        // --- 1) Compute coefficients for cutoff fc ---
+        const float omega_c = 2.0f * float(M_PI) * fc / fs;
+        const float sin_wc = std::sin(omega_c);
+        const float cos_wc = std::cos(omega_c);
+        const float alpha = sin_wc / (2.0f * Q);
+
+        float b0 = 1.0f, b1 = 0.0f, b2 = 0.0f;
+        float a0 = 1.0f, a1 = 0.0f, a2 = 0.0f;
 
         switch (currentFilterType) {
-                case 0: // LowPass
-                {
-                        float denominator = std::sqrt(1.0f + std::pow(ratio * currentFilterRes, 4.0f));
-                        magnitude = 1.0f / denominator;
+                case 0: // Low-pass
+                        b0 = (1.0f - cos_wc) * 0.5f;
+                        b1 =  1.0f - cos_wc;
+                        b2 = (1.0f - cos_wc) * 0.5f;
+                        a0 =  1.0f + alpha;
+                        a1 = -2.0f * cos_wc;
+                        a2 =  1.0f - alpha;
                         break;
-                }
-                case 1: // BandPass
-                {
-                        float lowRatio = ratio;
-                        float highRatio = 1.0f / ratio;
-                        float q = currentFilterRes;
-                        magnitude = 1.0f / std::sqrt(1.0f + std::pow(q * (lowRatio - highRatio), 2.0f));
+
+                case 1: // Band-pass
+                        b0 =  sin_wc * 0.5f;
+                        b1 =  0.0f;
+                        b2 = -sin_wc * 0.5f;
+                        a0 =  1.0f + alpha;
+                        a1 = -2.0f * cos_wc;
+                        a2 =  1.0f - alpha;
                         break;
-                }
-                case 2: // HighPass
-                {
-                        float denominator = std::sqrt(1.0f + std::pow(currentFilterRes / ratio, 4.0f));
-                        magnitude = 1.0f / denominator;
+
+                case 2: // High-pass
+                        b0 = (1.0f + cos_wc) * 0.5f;
+                        b1 = -(1.0f + cos_wc);
+                        b2 = (1.0f + cos_wc) * 0.5f;
+                        a0 =  1.0f + alpha;
+                        a1 = -2.0f * cos_wc;
+                        a2 =  1.0f - alpha;
                         break;
-                }
+
+                default:
+                        return 1.0f;
         }
 
-        // safety clamp
-        constexpr float minMag = 1e-9f;
-        return std::max(magnitude, minMag);
+        // --- 2) Normalize so a0 = 1 ---
+        b0 /= a0; b1 /= a0; b2 /= a0;
+        a1 /= a0; a2 /= a0;
+
+        // --- 3) Evaluate frequency response at test frequency ---
+        const float omega = 2.0f * float(M_PI) * frequency / fs;
+        std::complex<float> z1 = std::polar(1.0f, -omega);
+        std::complex<float> z2 = std::polar(1.0f, -2.0f * omega);
+
+        std::complex<float> num = b0 + b1 * z1 + b2 * z2;
+        std::complex<float> den = std::complex<float>(1.0f, 0.0f) + a1 * z1 + a2 * z2;
+
+        float H = std::abs(num / den);
+        return std::max(H, 1e-9f);
 }
 
 
