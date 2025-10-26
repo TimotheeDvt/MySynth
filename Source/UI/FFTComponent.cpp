@@ -91,10 +91,6 @@ void FFTComponent::paint(juce::Graphics& g) {
         }
 
         drawFilterCurve(g);
-
-        g.setColour(juce::Colours::white);
-        g.setFont(12.0f);
-        g.drawText("Spectrum Analyzer", 5, 5, 150, 20, juce::Justification::left);
 }
 
 void FFTComponent::drawFilterCurve(juce::Graphics& g) {

@@ -31,12 +31,44 @@ void OscComponent::paint (juce::Graphics& g) {
 }
 
 void OscComponent::resized() {
-        const auto bounds = getLocalBounds();
-        oscWaveSelector.setBounds(0, 0, 90, 20);
-        fmFreqSlider.setBounds(0, 80, bounds.getWidth() / 2 - 10, 90);
-        fmFreqLabel.setBounds(fmFreqSlider.getX(), fmFreqSlider.getY() - 20, fmFreqSlider.getWidth(), 20);
-        fmDepthSlider.setBounds(fmFreqSlider.getRight(), 80, bounds.getWidth() / 2 - 10, 90);
-        fmDepthLabel.setBounds(fmDepthSlider.getX(), fmFreqSlider.getY() - 20, fmFreqSlider.getWidth(), 20);
+        const auto bounds = getLocalBounds().reduced(10);
+        const auto sliderWidth = (float)bounds.getWidth() - 10;
+        const auto sliderHeight = (float)bounds.getHeight() / 2 - 50;
+        juce::FlexBox fb;
+        fb.flexDirection = juce::FlexBox::Direction::column;
+        fb.justifyContent = juce::FlexBox::JustifyContent::center;
+
+        fb.items.add(
+                juce::FlexItem(oscWaveSelector)
+                        .withWidth(sliderWidth)
+                        .withHeight(20)
+        );
+
+        fb.items.add(
+                juce::FlexItem(fmFreqSlider)
+                        .withWidth(sliderWidth)
+                        .withHeight(75)
+        );
+
+        fb.items.add(
+                juce::FlexItem(fmFreqLabel)
+                        .withWidth(sliderWidth)
+                        .withHeight(15)
+        );
+
+        fb.items.add(
+                juce::FlexItem(fmDepthSlider)
+                        .withWidth(sliderWidth)
+                        .withHeight(75)
+        );
+
+        fb.items.add(
+                juce::FlexItem(fmDepthLabel)
+                        .withWidth(sliderWidth)
+                        .withHeight(15)
+        );
+
+        fb.performLayout(bounds);
 }
 
 using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
@@ -48,7 +80,7 @@ void OscComponent::setSliderLabel (
         juce::String paramId
 ) {
         slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-        slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 25);
+        slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 15);
 
         addAndMakeVisible(slider);
 

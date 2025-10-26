@@ -26,28 +26,52 @@ MySynthAudioProcessorEditor::~MySynthAudioProcessorEditor() {
 
 void MySynthAudioProcessorEditor::paint(juce::Graphics& g) {
         g.fillAll(juce::Colours::black);
+
+        // Write "Oscillator", "Filter", "ADSR" labels
+        g.setColour(juce::Colours::white);
+        g.setFont(juce::FontOptions(16.0f));
+        g.drawText("Oscillator", oscComponent.getX(), 10, oscComponent.getWidth(), 20, juce::Justification::centred);
+        g.drawText("Filter", filter.getX(), 10, filter.getWidth(), 20, juce::Justification::centred);
+        g.drawText("ADSR", adsr.getX(), 10, adsr.getWidth(), 20, juce::Justification::centred);
+
+        g.drawText("Frequency Spectrum", fft.getX(), fft.getY() - 25, fft.getWidth(), 20, juce::Justification::centred);
 }
 
 void MySynthAudioProcessorEditor::resized() {
         const auto paddingX = 5;
         const auto paddingY = 35;
-        const auto keyboardHeight = 70;
 
-        oscComponent.setBounds(paddingX, paddingY, 300, 200);
-        adsr.setBounds(oscComponent.getRight(), paddingY, 280, 200);
-        filter.setBounds(paddingX, oscComponent.getBottom(), 300, 200);
-
-        fft.setBounds(
-                filter.getRight(),
-                adsr.getBottom(),
-                280,
+        oscComponent.setBounds(
+                paddingX,
+                paddingY,
+                getWidth() / 4 - paddingX,
+                200
+        );
+        filter.setBounds(
+                oscComponent.getRight() + paddingX,
+                paddingY,
+                getWidth() / 4 - paddingX,
+                200
+        );
+        adsr.setBounds(
+                filter.getRight() + paddingX,
+                paddingY,
+                getWidth() / 2 - 2*paddingX,
                 200
         );
 
+        fft.setBounds(
+                oscComponent.getX(),
+                adsr.getBottom() + paddingY,
+                getWidth() - 2*paddingX,
+                200
+        );
+
+        const auto keyboardheight = 70;
         keyboard.setBounds(
                 paddingX,
-                filter.getBottom() + 10,
-                getWidth() - (paddingX * 2),
-                keyboardHeight
+                getHeight() - paddingX - keyboardheight,
+                getWidth() - 2*paddingX,
+                keyboardheight
         );
 }

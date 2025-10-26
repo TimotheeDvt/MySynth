@@ -36,23 +36,23 @@ void AdsrComponent::resized() {
 
         fb.items.add(
                 juce::FlexItem(attackSlidder)
-                .withWidth(sliderWidth)
-                .withHeight(sliderHeight)
+                        .withWidth(sliderWidth)
+                        .withHeight(sliderHeight)
         );
         fb.items.add(
                 juce::FlexItem(decaySlidder)
-                .withWidth(sliderWidth)
-                .withHeight(sliderHeight)
+                        .withWidth(sliderWidth)
+                        .withHeight(sliderHeight)
         );
         fb.items.add(
                 juce::FlexItem(sustainSlidder)
-                .withWidth(sliderWidth)
-                .withHeight(sliderHeight)
+                        .withWidth(sliderWidth)
+                        .withHeight(sliderHeight)
         );
         fb.items.add(
                 juce::FlexItem(releaseSlidder)
-                .withWidth(sliderWidth)
-                .withHeight(sliderHeight)
+                        .withWidth(sliderWidth)
+                        .withHeight(sliderHeight)
         );
 
         fb.performLayout(bounds);
