@@ -19,9 +19,11 @@ void OscData::getNextAudioBlock(juce::dsp::ProcessContextReplacing<float> contex
 };
 
 void OscData::setWaveNote(const int midiNoteNumber) {
-	float freq = calculateFrequency(midiNoteNumber);
-	setFrequency(freq + fmMod);
-	lastMidiNote = midiNoteNumber;
+        float freq = scale != nullptr
+                ? scale->calculateFrequency(midiNoteNumber)
+                : juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+        setFrequency(freq + fmMod);
+        lastMidiNote = midiNoteNumber;
 };
 
 void OscData::setWaveFrequency(const float frequency) {
@@ -31,7 +33,9 @@ void OscData::setWaveFrequency(const float frequency) {
 void OscData::setFMParams(const float depth, const float freq) {
         fmOsc.setFrequency(freq);
         fmDepth = depth;
-        float frequency = calculateFrequency(lastMidiNote);
+        float frequency = scale != nullptr
+                ? scale->calculateFrequency(lastMidiNote)
+                : juce::MidiMessage::getMidiNoteInHertz(lastMidiNote);
         setFrequency(frequency + fmMod);
 }
 
@@ -56,48 +60,5 @@ void OscData::setWaveType(const int choice) {
 };
 
 void OscData::setScale(ScaleData* scaleData) {
-	scale = scaleData;
-}
-
-float OscData::calculateFrequency(int midiNoteNumber) {
-	// If no scale is loaded, use standard 12-TET
-	if (scale == nullptr || !scale->isLoaded()) {
-		return juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber, referenceFrequency);
-	}
-
-	// Get scale info
-	int scaleLength = (int)scale->getScaleLength();
-	if (scaleLength <= 1) {
-		return juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber, referenceFrequency);
-	}
-
-	// The last degree is the period/octave, actual scale has (scaleLength - 1) notes
-	int degreesPerPeriod = scaleLength - 1;
-	
-	// Distance from reference note (A4 = MIDI 69)
-	int noteDistance = midiNoteNumber - referenceNote;
-	
-	// Calculate how many periods (octaves) and which degree within the period
-	int periods = noteDistance / degreesPerPeriod;
-	int degreeIndex = noteDistance % degreesPerPeriod;
-	
-	// Handle negative modulo correctly
-	if (degreeIndex < 0) {
-		degreeIndex += degreesPerPeriod;
-		periods -= 1;
-	}
-
-	// Get the ratio for this scale degree
-	double ratio = scale->getRatio(degreeIndex);
-
-	// Get the period ratio (e.g., 2.0 for octave, 3.0 for tritave)
-	double periodRatio = scale->getRatio(scaleLength - 1);
-
-	// Apply period transposition
-	if (periods != 0) {
-		ratio *= std::pow(periodRatio, periods);
-	}
-
-	// Calculate final frequency
-	return referenceFrequency * (float)ratio;
+        scale = scaleData;
 }

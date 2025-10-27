@@ -15,13 +15,10 @@ public:
 	void setScale(ScaleData* scaleData);
 
 private:
-	float calculateFrequency(int midiNoteNumber);
 	juce::dsp::Oscillator<float> fmOsc { [](float x) { return std::sin(x);} };
 	float fmMod { 0.0f };
 	float fmDepth { 0.0f };
 	int lastMidiNote { 0 };
 
 	ScaleData* scale { nullptr };
-	float referenceFrequency { 440.0f };
-	int referenceNote { 69 }; // MIDI note 69 = A4
 };

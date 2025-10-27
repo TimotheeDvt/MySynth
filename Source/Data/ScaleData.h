@@ -10,6 +10,8 @@ public:
         ~ScaleData() = default;
 
         scala::scale scale;
+	float referenceFrequency { 440.0f };
+	int referenceNote { 69 }; // MIDI note 69 = A4
 
         void loadFromFile(const std::string& filename, const std::string& scaleName) {
                 std::ifstream input_file(filename);
@@ -30,4 +32,5 @@ public:
                 scale.name.clear();
                 scale.description.clear();
         }
+        float calculateFrequency(int midiNoteNumber);
 };

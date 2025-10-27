@@ -77,6 +77,7 @@ void MySynthAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
         for (int i = 0; i < synth.getNumVoices(); ++i) {
                 if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
                         voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+                        voice->getOscillator().setScale(&scaleData);
                 }
         }
         filter.prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
@@ -132,7 +133,6 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
                         voice->getOscillator().setWaveType(oscWave.load());
                         voice->updateGain(oscGain.load());
                         voice->getOscillator().setFMParams(fmDepth.load(), fmFreq.load());
-		        voice->getOscillator().setScale(&scaleData);
                         voice->update(attack.load(), decay.load(), sustain.load(), release.load());
                 }
         }

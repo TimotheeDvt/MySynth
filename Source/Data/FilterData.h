@@ -3,13 +3,13 @@
 #include <juce_dsp/juce_dsp.h>
 
 class FilterData {
-        public:
+public:
         void prepareToPlay(double sampleRate, int samplesPerBlock, int numChannels);
         void process(juce::AudioBuffer<float>& buffer);
         void updateParams(const int filterType, const float frequency, const float resonance);
         void reset();
 
-        private:
+private:
         juce::dsp::StateVariableTPTFilter<float> filter;
         bool isPrepared { false };
 };
