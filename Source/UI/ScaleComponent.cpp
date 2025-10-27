@@ -61,7 +61,7 @@ void ScaleComponent::paint(juce::Graphics& g) {
                 g.drawText(scaleData.getName(), 0, 6, bounds.getWidth(), 30, juce::Justification::centred);
 
                 g.setFont(15.0f);
-                juce::String info = juce::String(scaleData.getScaleLength()) + " notes";
+                juce::String info = juce::String(scaleData.getScaleLength() - 1) + " notes";
                 g.drawText(info, 0, 40, bounds.getWidth(), 25, juce::Justification::centred);
 
                 g.setFont(17.0f);
