@@ -35,19 +35,19 @@ void OscData::setFMParams(const float depth, const float freq) {
 void OscData::setWaveType(const int choice) {
         switch (choice) {
                 case 0:
-                // Sine
-                initialise([](float x) { return std::sin(x); });
-                break;
+                        // Sine
+                        initialise([](float x) { return std::sin(x); });
+                        break;
                 case 1:
-                // Saw
-                initialise([](float x) { return x / juce::MathConstants<float>::pi; });
-                break;
+                        // Saw
+                        initialise([](float x) { return x / juce::MathConstants<float>::pi; });
+                        break;
                 case 2:
-                // Square
-                initialise([](float x) { return x < 0.0f ? -1.0f : 1.0f; });
-                break;
+                        // Square
+                        initialise([](float x) { return x < 0.0f ? -1.0f : 1.0f; });
+                        break;
                 default:
-                jassertfalse;
-                break;
+                        jassertfalse;
+                        break;
         }
 };

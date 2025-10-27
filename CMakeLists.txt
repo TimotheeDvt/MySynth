@@ -23,34 +23,24 @@ juce_add_plugin(MySynth
         PLUGIN_NAME "MySynth"
 )
 
-# Sources du projet
-target_sources(MySynth
-PRIVATE
-        Source/PluginProcessor.cpp
-        Source/PluginProcessor.h
-        Source/PluginEditor.cpp
-        Source/PluginEditor.h
-
-        Source/SynthVoice.cpp
-        Source/SynthVoice.h
-        Source/SynthSound.h
-
-        Source/UI/AdsrComponent.cpp
-        Source/UI/AdsrComponent.h
-        Source/UI/OscComponent.cpp
-        Source/UI/OscComponent.h
-        Source/UI/FilterComponent.cpp
-        Source/UI/FilterComponent.h
-        Source/UI/FFTComponent.cpp
-        Source/UI/FFTComponent.h
-
-        Source/Data/AdsrData.cpp
-        Source/Data/AdsrData.h
-        Source/Data/OscData.cpp
-        Source/Data/OscData.h
-        Source/Data/FilterData.cpp
-        Source/Data/FilterData.h
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_SOURCE_DIR}/Source/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Source/*.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Source/*.hpp"
 )
+
+# Sources du projet
+target_sources(MySynth PRIVATE ${SRC_FILES})
+
+# Standalone target
+set(STANDALONE_TARGET "${PROJECT_NAME}_Standalone")
+
+if(TARGET ${STANDALONE_TARGET})
+    target_sources(${STANDALONE_TARGET} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Source/MySynth.rc")
+    set_target_properties(${STANDALONE_TARGET} PROPERTIES
+        OUTPUT_NAME "AwesomeSynth"
+    )
+endif()
 
 # Modules JUCE nécessaires
 target_compile_definitions(MySynth

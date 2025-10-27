@@ -4,6 +4,7 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="pRr0FZ" name="MySynth">
     <GROUP id="{0AC69535-AE4E-7DE3-6243-8594F97D1C15}" name="Source">
+      <FILE id="pqelby" name="MySynth.ico" compile="0" resource="1" file="Source/MySynth.ico"/>
       <FILE id="GQ9oHX" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="EZWYon" name="PluginProcessor.h" compile="0" resource="0"
@@ -22,11 +23,16 @@
         <FILE id="DQXZcr" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
         <FILE id="ynB11W" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
         <FILE id="KGE3GX" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
+        <FILE id="Ep2Zzo" name="ScaleData.h" compile="0" resource="0" file="Source/Data/ScaleData.h"/>
       </GROUP>
       <GROUP id="{07AC909D-E340-6C7F-386D-A598A101716F}" name="UI">
         <FILE id="euC0bg" name="AdsrComponent.cpp" compile="1" resource="0"
               file="Source/UI/AdsrComponent.cpp"/>
         <FILE id="K45S1x" name="AdsrComponent.h" compile="0" resource="0" file="Source/UI/AdsrComponent.h"/>
+        <FILE id="peQiLn" name="AdsrGraphComponent.cpp" compile="1" resource="0"
+              file="Source/UI/AdsrGraphComponent.cpp"/>
+        <FILE id="pwhpdl" name="AdsrGraphComponent.h" compile="0" resource="0"
+              file="Source/UI/AdsrGraphComponent.h"/>
         <FILE id="qBRsRd" name="FFTComponent.cpp" compile="1" resource="0"
               file="Source/UI/FFTComponent.cpp"/>
         <FILE id="HbGUg2" name="FFTComponent.h" compile="0" resource="0" file="Source/UI/FFTComponent.h"/>
@@ -37,6 +43,15 @@
         <FILE id="aKigjE" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="qTog1E" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
+        <FILE id="K1G2Ax" name="ScaleComponent.cpp" compile="1" resource="0"
+              file="Source/UI/ScaleComponent.cpp"/>
+        <FILE id="ZgSq6R" name="ScaleComponent.h" compile="0" resource="0"
+              file="Source/UI/ScaleComponent.h"/>
+      </GROUP>
+      <GROUP id="{23177513-FE1D-E166-65B2-C202BA5B5D15}" name="Libs">
+        <FILE id="d9sJFX" name="scala_file.hpp" compile="0" resource="0" file="Source/Libs/scala_file.hpp"/>
+        <FILE id="U1lS3H" name="scala_kbm.cpp" compile="1" resource="0" file="Source/Libs/scala_kbm.cpp"/>
+        <FILE id="vZdpub" name="scala_scl.cpp" compile="1" resource="0" file="Source/Libs/scala_scl.cpp"/>
       </GROUP>
     </GROUP>
   </MAINGROUP>
@@ -58,7 +73,7 @@
   </MODULES>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
-    <VS2022 targetFolder="Builds/VisualStudio2022">
+    <VS2022 targetFolder="Builds/VisualStudio2022" smallIcon="jb4tVL" bigIcon="jb4tVL">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="MySynth"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="MySynth"/>
