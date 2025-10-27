@@ -19,7 +19,7 @@ public:
 
 private:
         MySynthAudioProcessor& audioProcessor;
-        OscComponent oscComponent;
+        OscComponent osc;
         AdsrComponent adsr;
         FilterComponent filter;
         FFTComponent fft;

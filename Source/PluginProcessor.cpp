@@ -119,6 +119,7 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         for (int i = 0; i < synth.getNumVoices(); ++i) {
                 if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i))) {
                         auto& oscWave = *apvts.getRawParameterValue("OSC1");
+                        auto& oscGain = *apvts.getRawParameterValue("OSC1GAIN");
 
                         auto& fmFreq = *apvts.getRawParameterValue("FMFREQOSC1");
                         auto& fmDepth = *apvts.getRawParameterValue("FMDEPTHOSC1");
@@ -129,6 +130,7 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
                         auto& release = *apvts.getRawParameterValue("RELEASE");
 
                         voice->getOscillator().setWaveType(oscWave.load());
+                        voice->updateGain(oscGain.load());
                         voice->getOscillator().setFMParams(fmDepth.load(), fmFreq.load());
 		        voice->getOscillator().setScale(&scaleData);
                         voice->update(attack.load(), decay.load(), sustain.load(), release.load());
@@ -188,6 +190,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout MySynthAudioProcessor::creat
                 "Oscillator 1",
                 juce::StringArray{ "Sine", "Saw", "Square" },
                 0
+        ));
+        params.push_back(std::make_unique<juce::AudioParameterFloat>(
+                "OSC1GAIN",
+                "Gain Osc1",
+                juce::NormalisableRange<float>{0.0f, 1.0f, 0.01f},
+                0.3f
         ));
 
         // FREQUENCY MODULATOR

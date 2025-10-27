@@ -33,13 +33,17 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
         osc.prepareToPlay(spec);
         gain.prepare(spec);
 
-        gain.setGainLinear(0.04f);
+        gain.setGainLinear(0.3f);
 
         isPrepared = true;
 };
 
 void SynthVoice::update(const float attack, const float decay, const float sustain, const float release) {
         adsr.update(attack, decay, sustain, release);
+};
+
+void SynthVoice::updateGain(const float newGain) {
+        gain.setGainLinear(newGain);
 };
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) {

@@ -4,7 +4,7 @@
 MySynthAudioProcessorEditor::MySynthAudioProcessorEditor(MySynthAudioProcessor& p)
         : AudioProcessorEditor(&p),
         audioProcessor(p),
-        oscComponent(audioProcessor.apvts, "OSC1", "FMFREQOSC1", "FMDEPTHOSC1"),
+        osc(audioProcessor.apvts, "OSC1", "OSC1GAIN", "FMFREQOSC1", "FMDEPTHOSC1"),
         filter(audioProcessor.apvts, "FILTERTYPE", "FILTERFREQ", "FILTERRES"),
         adsr(audioProcessor.apvts),
         scale(audioProcessor),
@@ -12,7 +12,7 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor(MySynthAudioProcessor& 
 {
         setSize(600, 580);
 
-        addAndMakeVisible(oscComponent);
+        addAndMakeVisible(osc);
         addAndMakeVisible(adsr);
         addAndMakeVisible(filter);
         addAndMakeVisible(fft);
@@ -32,7 +32,7 @@ void MySynthAudioProcessorEditor::paint(juce::Graphics& g) {
         // Write "Oscillator", "Filter", "ADSR" labels
         g.setColour(juce::Colours::white);
         g.setFont(juce::FontOptions(16.0f));
-        g.drawText("Oscillator", oscComponent.getX(), 10, oscComponent.getWidth(), 20, juce::Justification::centred);
+        g.drawText("Oscillator", osc.getX(), 10, osc.getWidth(), 20, juce::Justification::centred);
         g.drawText("Filter", filter.getX(), 10, filter.getWidth(), 20, juce::Justification::centred);
         g.drawText("ADSR", adsr.getX(), 10, adsr.getWidth(), 20, juce::Justification::centred);
 
@@ -52,14 +52,14 @@ void MySynthAudioProcessorEditor::resized() {
          * ----------------------------
          ****/
 
-        oscComponent.setBounds(
+        osc.setBounds(
                 paddingX,
                 paddingY,
                 getWidth() / 4 - paddingX,
                 200
         );
         adsr.setBounds(
-                oscComponent.getRight() + paddingX,
+                osc.getRight() + paddingX,
                 paddingY,
                 getWidth() / 2 - 2*paddingX,
                 200
@@ -72,8 +72,8 @@ void MySynthAudioProcessorEditor::resized() {
         );
 
         scale.setBounds(
-                oscComponent.getX(),
-                oscComponent.getBottom() + paddingY,
+                osc.getX(),
+                osc.getBottom() + paddingY,
                 getWidth() / 2 - paddingX,
                 200
         );
