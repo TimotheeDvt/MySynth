@@ -36,9 +36,9 @@ target_sources(MySynth PRIVATE ${SRC_FILES})
 set(STANDALONE_TARGET "${PROJECT_NAME}_Standalone")
 
 if(TARGET ${STANDALONE_TARGET})
-    target_sources(${STANDALONE_TARGET} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Source/MySynth.rc")
+    target_sources(${STANDALONE_TARGET} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Resources/MySynth.rc")
     set_target_properties(${STANDALONE_TARGET} PROPERTIES
-        OUTPUT_NAME "AwesomeSynth"
+        OUTPUT_NAME "MySynth"
     )
 endif()
 

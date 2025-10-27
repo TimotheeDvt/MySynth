@@ -18,7 +18,7 @@ I added a feature to allow user to import a .scl file and so playing in a differ
 [Let's Build a Synth VST Plug-in with JUCE and C++ (2020)](https://youtube.com/playlist?list=PLLgJJsrdwhPwJimt5vtHtNmu63OucmPck&si=KZlAsZ0AW8tzpErz)
 
 Well, it looks like this :
-![Screenshot of the VST](./Source/img.png)
+![Screenshot of the VST](./Resources/img.png)
 
 ### Goal
 - Clean the code and code duplication
