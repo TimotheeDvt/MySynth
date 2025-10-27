@@ -5,7 +5,7 @@
 #include "../Libs/scala_scl.h"
 
 class ScaleData {
-        public:
+public:
         ScaleData() = default;
         ~ScaleData() = default;
 
@@ -25,4 +25,9 @@ class ScaleData {
         bool isLoaded() { return !scale.degrees.empty() && scale.degrees.size() > 1; }
         juce::String getName() { return juce::String(scale.name); }
         juce::String getDescription() { return juce::String(scale.getDescription()); }
+        void clear() {
+                scale.degrees.clear();
+                scale.name.clear();
+                scale.description.clear();
+        }
 };

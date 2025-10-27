@@ -7,6 +7,7 @@ MySynthAudioProcessorEditor::MySynthAudioProcessorEditor(MySynthAudioProcessor& 
         oscComponent(audioProcessor.apvts, "OSC1", "FMFREQOSC1", "FMDEPTHOSC1"),
         filter(audioProcessor.apvts, "FILTERTYPE", "FILTERFREQ", "FILTERRES"),
         adsr(audioProcessor.apvts),
+        scale(audioProcessor),
         keyboard(audioProcessor.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
         setSize(600, 580);

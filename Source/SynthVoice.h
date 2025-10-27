@@ -4,6 +4,7 @@
 #include "SynthSound.h"
 #include "./Data/AdsrData.h"
 #include "./Data/OscData.h"
+#include "./Data/ScaleData.h"
 
 class SynthVoice : public juce::SynthesiserVoice {
 public:
@@ -32,6 +33,7 @@ private:
         juce::AudioBuffer<float> synthBuffer;
 
         OscData osc;
+        ScaleData* scaleData{ nullptr };
 
         juce::dsp::Gain<float> gain;
 

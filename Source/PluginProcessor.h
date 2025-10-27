@@ -5,6 +5,7 @@
 #include "SynthVoice.h"
 #include "SynthSound.h"
 #include "Data/FilterData.h"
+#include "Data/ScaleData.h"
 
 class FFTComponent;
 
@@ -47,11 +48,13 @@ public:
         juce::MidiKeyboardState keyboardState;
 
         void setFFTComponent(FFTComponent* fftComp) { fftComponent = fftComp; }
+	ScaleData& getScaleData() { return scaleData; }
 
 private:
         juce::Synthesiser synth;
         FilterData filter;
         FFTComponent* fftComponent;
+	ScaleData scaleData;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MySynthAudioProcessor)
 };

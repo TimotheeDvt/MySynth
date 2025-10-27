@@ -130,6 +130,7 @@ void MySynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
 
                         voice->getOscillator().setWaveType(oscWave.load());
                         voice->getOscillator().setFMParams(fmDepth.load(), fmFreq.load());
+		        voice->getOscillator().setScale(&scaleData);
                         voice->update(attack.load(), decay.load(), sustain.load(), release.load());
                 }
         }
